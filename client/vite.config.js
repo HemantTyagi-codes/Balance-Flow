@@ -1,9 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-// https://vitejs.dev/config/
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 export default defineConfig({
   plugins: [react()],
+
   server: {
     port: 5173,
     proxy: {
@@ -13,8 +18,9 @@ export default defineConfig({
       },
     },
   },
+
   build: {
-    outDir: new URL('../public', import.meta.url).pathname.slice(1), // resolves to ../public
+    outDir: path.resolve(__dirname, '../public'),
     emptyOutDir: true,
   },
 })
