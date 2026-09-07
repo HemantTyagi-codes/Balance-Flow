@@ -10,7 +10,6 @@ const connectDB = require("./src/config/db");
 const authRoutes = require("./src/routes/api/authRoutes");
 const transactionRoutes = require("./src/routes/api/transactionRoutes");
 const walletRoutes = require("./src/routes/api/walletRoutes");
-const viewRoutes = require("./src/routes/web/viewRoutes");
 
 const app = express();
 
@@ -32,22 +31,27 @@ app.use(
     swaggerUi.setup(swaggerDocument)
 );
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Serve React build (public/) as static files
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", viewRoutes);
+// API routes (unchanged)
 app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/wallet", walletRoutes);
 
+// SPA catch-all: send index.html for any non-API route
+// Express 5 requires named wildcard syntax /{*path}
+app.get("/{*path}", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-    console.log(`Server running on ${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });
