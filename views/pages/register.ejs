@@ -1,0 +1,35 @@
+<%- include('../partials/header', { title: title }) %>
+
+<main class="auth-page">
+  <section class="auth-card">
+    <h2>Create your account</h2>
+    <p>Register to start using your digital wallet.</p>
+    <form id="register-form" class="auth-form">
+      <label>
+        Full Name
+        <input type="text" name="name" required />
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" required />
+      </label>
+      <label>
+        Phone
+        <input type="text" name="phone" required />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" required />
+      </label>
+      <label>
+        MPIN (4 digits)
+        <input type="password" name="mpin" maxlength="4" required />
+      </label>
+      <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <p class="form-link">Already have an account? <a href="/login">Login</a></p>
+    <div id="register-message" class="message"></div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>

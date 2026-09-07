@@ -1,0 +1,200 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "PhonePe Clone API",
+    "version": "1.0.0",
+    "description": "API documentation for PhonePe Clone App"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/api/auth": {
+      "get": {
+        "summary": "Test Auth Route",
+        "description": "Returns a test message.",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register User",
+        "description": "Create a new PhonePe user account.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "phone",
+                  "mpin"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Hemant Tyagi"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "hemant@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password@123"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "9876543210"
+                  },
+                  "mpin": {
+                    "type": "string",
+                    "example": "1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          },
+          "400": {
+            "description": "User already exists"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login User",
+        "description": "Authenticate user and return JWT token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "hemant@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password@123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "401": {
+            "description": "Invalid email or password"
+          }
+        }
+      }
+    },
+
+    "/api/auth/setup-mpin": {
+      "post": {
+        "summary": "Setup MPIN",
+        "description": "Create or update user's MPIN.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "mpin"
+                ],
+                "properties": {
+                  "mpin": {
+                    "type": "string",
+                    "example": "1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "MPIN set successfully"
+          },
+          "400": {
+            "description": "Invalid MPIN"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+
+    "/api/auth/profile": {
+      "get": {
+        "summary": "Get User Profile",
+        "description": "Returns logged-in user's profile.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile fetched successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  }
+}
